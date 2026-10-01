@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ihat://identity/subject-link/v1",
+  "title": "iHAT SubjectLink v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "id", "revision", "created_at", "updated_at", "digest",
+    "subject_id", "relying_party_id", "issuer", "provider_subject",
+    "pairwise_subject", "linking_method", "assurance", "status", "linked_at",
+    "last_verified_at", "revocation_epoch"
+  ],
+  "properties": {
+    "schema": { "const": "ihat://identity/subject-link/v1" },
+    "id": { "type": "string", "pattern": "^subject-link/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "updated_at": { "$ref": "#/$defs/timestamp" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "subject_id": { "type": "string", "pattern": "^subject/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "relying_party_id": { "$ref": "#/$defs/serviceId" },
+    "issuer": { "$ref": "#/$defs/issuer" },
+    "provider_subject": { "$ref": "#/$defs/providerSubject" },
+    "pairwise_subject": { "$ref": "#/$defs/pairwiseSubject" },
+    "linking_method": { "enum": ["dual-authenticated", "admin-assisted-recovery"] },
+    "assurance": { "$ref": "#/$defs/assurance" },
+    "status": { "enum": ["pending", "active", "suspended", "unlinked"] },
+    "linked_at": { "$ref": "#/$defs/timestamp" },
+    "last_verified_at": { "$ref": "#/$defs/timestamp" },
+    "revocation_epoch": { "type": "integer", "minimum": 0 }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string", "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "serviceId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,62}$" },
+    "issuer": { "type": "string", "format": "uri", "pattern": "^https://[^?#]{1,480}$" },
+    "providerSubject": { "type": "string", "minLength": 1, "maxLength": 255, "pattern": "^[^\\s]+$" },
+    "pairwiseSubject": { "type": "string", "minLength": 16, "maxLength": 255, "pattern": "^[A-Za-z0-9._~-]+$" },
+    "assurance": { "enum": ["baseline", "phishing-resistant", "hardware-bound"] }
+  }
+}
+

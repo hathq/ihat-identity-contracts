@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ihat://identity/revocation-event/v1",
+  "title": "iHAT RevocationEvent v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "id", "revision", "created_at", "updated_at", "digest",
+    "aggregate_type", "aggregate_id", "subject_reference_digest", "reason",
+    "actor_type", "actor_id", "event_sequence", "revocation_epoch", "effective_at",
+    "correlation_id"
+  ],
+  "properties": {
+    "schema": { "const": "ihat://identity/revocation-event/v1" },
+    "id": { "type": "string", "pattern": "^revocation-event/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "revision": { "type": "integer", "const": 1 },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "updated_at": { "$ref": "#/$defs/timestamp" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "aggregate_type": { "enum": ["subject-link", "service-account", "authenticator", "device", "session", "provider-connection", "subject-sessions"] },
+    "aggregate_id": { "type": "string", "pattern": "^[a-z][a-z-]{1,31}/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "subject_reference_digest": { "$ref": "#/$defs/digest" },
+    "reason": { "enum": ["user-request", "administrator-policy", "compromise", "credential-reuse", "account-unlinked", "recovery-completed", "expired"] },
+    "actor_type": { "enum": ["subject", "service-operator", "identity-operator", "security-automation"] },
+    "actor_id": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "event_sequence": { "type": "integer", "minimum": 1 },
+    "revocation_epoch": { "type": "integer", "minimum": 1 },
+    "effective_at": { "$ref": "#/$defs/timestamp" },
+    "correlation_id": { "type": "string", "pattern": "^correlation/[A-Za-z0-9._~-]{16,190}$" },
+    "previous_event_digest": { "$ref": "#/$defs/digest" }
+  },
+  "oneOf": [
+    { "properties": { "aggregate_type": { "const": "subject-link" }, "aggregate_id": { "pattern": "^subject-link/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "service-account" }, "aggregate_id": { "pattern": "^service-account/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "authenticator" }, "aggregate_id": { "pattern": "^authenticator/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "device" }, "aggregate_id": { "pattern": "^device/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "session" }, "aggregate_id": { "pattern": "^session-record/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "provider-connection" }, "aggregate_id": { "pattern": "^provider-connection/" } }, "required": ["aggregate_type", "aggregate_id"] },
+    { "properties": { "aggregate_type": { "const": "subject-sessions" }, "aggregate_id": { "pattern": "^subject/" } }, "required": ["aggregate_type", "aggregate_id"] }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string", "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}

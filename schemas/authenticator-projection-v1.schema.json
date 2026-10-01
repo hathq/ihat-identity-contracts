@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ihat://identity/authenticator-projection/v1",
+  "title": "iHAT AuthenticatorProjection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "id", "revision", "created_at", "updated_at", "digest",
+    "audience", "pairwise_subject", "provider_connection_id", "kind",
+    "assurance", "user_verification", "backup_state", "status", "enrolled_at",
+    "revocation_epoch"
+  ],
+  "properties": {
+    "schema": { "const": "ihat://identity/authenticator-projection/v1" },
+    "id": { "type": "string", "pattern": "^authenticator/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "updated_at": { "$ref": "#/$defs/timestamp" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "audience": { "$ref": "#/$defs/serviceId" },
+    "pairwise_subject": { "$ref": "#/$defs/pairwiseSubject" },
+    "provider_connection_id": { "type": "string", "pattern": "^provider-connection/[a-z0-9][a-z0-9._-]{0,126}$" },
+    "kind": { "enum": ["passkey", "fido2-security-key", "authenticator-push", "totp"] },
+    "assurance": { "enum": ["baseline", "phishing-resistant", "hardware-bound"] },
+    "user_verification": { "enum": ["required", "preferred", "not-available"] },
+    "backup_state": { "enum": ["not-applicable", "not-backed-up", "backed-up", "unknown"] },
+    "status": { "enum": ["active", "suspended", "revoked"] },
+    "enrolled_at": { "$ref": "#/$defs/timestamp" },
+    "last_used_at": { "$ref": "#/$defs/timestamp" },
+    "revocation_epoch": { "type": "integer", "minimum": 0 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "enum": ["authenticator-push", "totp"] } }, "required": ["kind"] },
+      "then": { "properties": { "assurance": { "const": "baseline" } } }
+    },
+    {
+      "if": { "properties": { "assurance": { "const": "hardware-bound" } }, "required": ["assurance"] },
+      "then": { "properties": { "kind": { "const": "fido2-security-key" } } }
+    }
+  ],
+  "$defs": {
+    "timestamp": {
+      "type": "string", "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "serviceId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,62}$" },
+    "pairwiseSubject": { "type": "string", "minLength": 16, "maxLength": 255, "pattern": "^[A-Za-z0-9._~-]+$" }
+  }
+}
+

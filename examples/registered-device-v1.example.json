@@ -1,0 +1,19 @@
+{
+  "schema": "ihat://identity/registered-device/v1",
+  "id": "device/windows-001",
+  "revision": 1,
+  "created_at": "2026-08-03T01:00:00.000Z",
+  "updated_at": "2026-08-03T01:00:20.000Z",
+  "digest": "sha256:110c9dac4b9e0e1b475e3d8acc329f605c87ef023aa5c4af519f74f143c97953",
+  "service_account_id": "service-account/nerp-001",
+  "display_name": "HAT-DEV",
+  "platform": "windows",
+  "device_key_thumbprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "credential_reference": "cred/device-key-reference-001",
+  "proof_method": "local-sender-proof",
+  "attestation": "none",
+  "trust_status": "trusted",
+  "registered_at": "2026-08-03T01:00:05.000Z",
+  "last_seen_at": "2026-08-03T01:00:20.000Z",
+  "revocation_epoch": 0
+}

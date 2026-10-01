@@ -1,0 +1,23 @@
+{
+  "schema": "ihat://identity/identity-provider-connection/v1",
+  "id": "provider-connection/ihat-primary",
+  "revision": 1,
+  "created_at": "2026-08-03T01:00:00.000Z",
+  "updated_at": "2026-08-03T01:00:20.000Z",
+  "digest": "sha256:ca6d8e9df68b790a15c54fc56114dbb2160c656e761a47006017a24894d744b6",
+  "connection_role": "relying-party-client",
+  "provider_kind": "zitadel",
+  "issuer": "https://id.ihat.online",
+  "discovery_uri": "https://id.ihat.online/.well-known/openid-configuration",
+  "client_id": "nerp-local-client",
+  "client_authentication": "none-pkce",
+  "redirect_uris": ["http://127.0.0.1:41731/auth/callback"],
+  "allowed_audiences": ["nerp"],
+  "scopes": ["openid", "profile"],
+  "automatic_email_linking": false,
+  "key_set_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "status": "active",
+  "connected_at": "2026-08-03T01:00:05.000Z",
+  "last_verified_at": "2026-08-03T01:00:20.000Z",
+  "revocation_epoch": 0
+}

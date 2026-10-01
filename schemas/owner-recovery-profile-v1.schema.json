@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ihat://identity/owner-recovery-profile/v1",
+  "title": "iHAT OwnerRecoveryProfile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "id", "revision", "created_at", "updated_at", "digest",
+    "profile", "mnemonic_language", "mnemonic_word_count", "entropy_bits", "checksum_bits",
+    "seed_kdf", "seed_kdf_rounds", "signing_key_derivation", "signing_key_domain",
+    "signing_algorithm", "authority_id", "authority_device_id", "key_id", "key_fingerprint", "public_key_hex"
+  ],
+  "properties": {
+    "schema": { "const": "ihat://identity/owner-recovery-profile/v1" },
+    "id": { "const": "owner-recovery-profile/primary" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "updated_at": { "$ref": "#/$defs/timestamp" },
+    "digest": { "$ref": "#/$defs/digest" },
+    "profile": { "const": "bip39-ed25519-v1" },
+    "mnemonic_language": { "const": "english" },
+    "mnemonic_word_count": { "const": 24 },
+    "entropy_bits": { "const": 256 },
+    "checksum_bits": { "const": 8 },
+    "seed_kdf": { "const": "pbkdf2-hmac-sha512" },
+    "seed_kdf_rounds": { "const": 2048 },
+    "signing_key_derivation": { "const": "sha512-domain-first-32" },
+    "signing_key_domain": { "const": "ihat-owner-recovery-ed25519-v1" },
+    "signing_algorithm": { "const": "ed25519" },
+    "authority_id": { "type": "string", "pattern": "^owner-recovery-[0-9a-f]{64}$" },
+    "authority_device_id": { "const": "offline-owner-recovery-root" },
+    "key_id": { "type": "string", "pattern": "^owner-recovery-key-[0-9a-f]{64}$" },
+    "key_fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "public_key_hex": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string", "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+  }
+}
