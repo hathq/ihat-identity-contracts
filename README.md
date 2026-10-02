@@ -1,6 +1,27 @@
-# iHAT Identity Contracts
+# ihat-identity-contracts
 
-Implementation-independent, closed v1 contracts for exchanging authentication, service-account, device, session, step-up, recovery, and revocation projections. Consumers implement their own authority and storage integrations through these contracts.
+Exchange account, device and session information through strict identity contracts.
+
+## What you can do
+
+- Validate closed identity and revocation projections.
+- Keep secret values out of display and exchange objects.
+
+## Current scope
+
+Consumers supply their identity authority, storage and trust integrations.
+
+Package distribution is not activated by this documentation. Use the checked-in source and the declared dependency versions; published availability must be verified separately.
+
+## Getting started
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -e .
+```
+
+## Examples and interface details
 
 ## Contracts
 
@@ -17,19 +38,10 @@ Implementation-independent, closed v1 contracts for exchanging authentication, s
 
 Schema URIs are `ihat://identity/<contract>/v1`. Consumers allowlist them and resolve schemas locally. All objects reject unknown fields.
 
-## Verification
+## Documentation and source
 
-Use Python 3.11 or later and the pinned validator in `requirements-test.txt`.
+[Interface reference](docs/interface-reference.md)
 
-```bash
-make check
-```
+[Usage guide](docs/getting-started.md)
 
-The gate validates nine schemas, valid fixtures, unknown fields, versions, IDs, timestamps, digests, weak-authenticator promotion, issuer/audience/expiry, operation binding, and replay. Synthetic examples do not establish authentication, a connected service, or production readiness.
-
-## Documents
-
-- `docs/adr/0001-identity-authentication-boundaries.md`: authority and database boundaries.
-- `docs/threat-model.md`: attack surface, controls, and required negative tests.
-- `docs/data-classification.md`: classification, storage, retention, and deletion responsibilities.
-- `docs/contract-verification.md`: digest and context verification rules.
+[Examples](examples) · [Schemas](schemas) · [Detailed documentation](docs) · [Implementation and public interfaces](src) · [Verification cases](tests) · [Contributing](CONTRIBUTING.md) · [Security reporting](SECURITY.md) · [License](LICENSE) · [Attribution notices](NOTICE)
