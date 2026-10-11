@@ -1,0 +1,33 @@
+name: Original published assertion source
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - run: |
+          python3 - <<'PY'
+          import hashlib,json,subprocess,tempfile
+          from pathlib import Path
+          root=Path('source-history/ihat-identity-assertion-contracts')
+          record=json.loads((root/'source-record.json').read_text())
+          bundle=(root/'original.bundle').resolve()
+          assert hashlib.sha256(bundle.read_bytes()).hexdigest()==record['bundle_sha256']
+          with tempfile.TemporaryDirectory() as directory:
+              def git(*args):
+                  return subprocess.check_output(['git',*args],cwd=directory,stderr=subprocess.DEVNULL,text=True).strip()
+              git('init','--bare')
+              git('bundle','verify',str(bundle))
+              git('fetch',str(bundle),'+refs/*:refs/*')
+              for ref in record['refs']:
+                  assert git('rev-parse',ref['ref'])==ref['sha']
+              assert git('cat-file','-t','2e5db3bcca7b4708b3b78fd30cf456ef4e71ad71')=='commit'
+          print('Published assertion source and decisions restored')
+          PY
