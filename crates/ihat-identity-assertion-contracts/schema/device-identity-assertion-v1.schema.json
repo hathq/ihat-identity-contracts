@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ihat://identity/device-identity-assertion/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "issuer", "audience", "service_id", "pairwise_subject",
+    "device_id", "device_proof_key_ref", "session_ref", "device_posture", "revocation_epochs",
+    "issued_at_epoch_s", "expires_at_epoch_s", "nonce", "key_id", "signature"
+  ],
+  "properties": {
+    "schema": { "const": "ihat://identity/device-identity-assertion/v1" },
+    "issuer": { "$ref": "#/$defs/text512" },
+    "audience": { "$ref": "#/$defs/text128" },
+    "service_id": { "$ref": "#/$defs/text128" },
+    "pairwise_subject": { "$ref": "#/$defs/text128" },
+    "device_id": { "$ref": "#/$defs/text128" },
+    "device_proof_key_ref": { "$ref": "#/$defs/text240" },
+    "session_ref": { "$ref": "#/$defs/text128" },
+    "device_posture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "revision"],
+      "properties": {
+        "state": { "const": "compliant" },
+        "revision": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "revocation_epochs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject", "service", "device", "session"],
+      "properties": {
+        "subject": { "type": "integer", "minimum": 0 },
+        "service": { "type": "integer", "minimum": 0 },
+        "device": { "type": "integer", "minimum": 0 },
+        "session": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "issued_at_epoch_s": { "type": "integer", "minimum": 0 },
+    "expires_at_epoch_s": { "type": "integer", "minimum": 1 },
+    "nonce": { "$ref": "#/$defs/text128" },
+    "key_id": { "$ref": "#/$defs/text128" },
+    "signature": { "type": "string", "minLength": 1, "maxLength": 1024 }
+  },
+  "$defs": {
+    "text128": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "text240": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "text512": { "type": "string", "minLength": 1, "maxLength": 512 }
+  }
+}
