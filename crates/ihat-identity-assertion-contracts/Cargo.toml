@@ -1,0 +1,61 @@
+[package]
+include = ["Cargo.toml", "Cargo.lock", "LICENSE", "NOTICE", "README.md", "src/**", "schema/**", "tests/**", "docs/**"]
+repository = "https://github.com/hathq/ihat-identity-contracts"
+documentation = "https://docs.rs/ihat-identity-assertion-contracts"
+readme = "README.md"
+keywords = ["identity", "assertion", "authentication"]
+categories = ["authentication"]
+name = "ihat-identity-assertion-contracts"
+version = "0.10.0"
+edition = "2024"
+rust-version = "1.97"
+description = "Closed device identity assertion contracts shared by iHAT consumers"
+license = "Apache-2.0"
+publish = ["crates-io"]
+autotests = false
+
+[dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.151"
+ed25519-dalek = "2.2.0"
+hex = "0.4.3"
+sha2 = "=0.10.9"
+thiserror = "2.0.18"
+
+[dev-dependencies]
+ed25519-dalek = "2.2.0"
+hex = "0.4.3"
+
+[[test]]
+name = "contracts"
+path = "tests/contracts.rs"
+
+[[test]]
+name = "current_status"
+path = "tests/current_status.rs"
+
+[[test]]
+name = "current_status_failures"
+path = "tests/current_status_failures.rs"
+
+[[test]]
+name = "authority_wire"
+path = "tests/authority_wire.rs"
+
+[[test]]
+name = "current_identity_wire"
+path = "tests/current_identity_wire.rs"
+
+[[test]]
+name = "current_session_wire"
+path = "tests/current_session_wire.rs"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+unwrap_used = "deny"

@@ -1,0 +1,15 @@
+{
+  "schema": "source-consolidation-v1",
+  "components": [
+    {
+      "id": "ihat-identity-assertion-contracts",
+      "owner_id": "ihat-identity-contracts",
+      "original_repository": "hathq/ihat-identity-assertion-contracts",
+      "owner_repository": "hathq/ihat-identity-contracts",
+      "subpath": "crates/ihat-identity-assertion-contracts",
+      "source_head": "2e5db3bcca7b4708b3b78fd30cf456ef4e71ad71",
+      "history_ref": "refs/consolidated/ihat-identity-assertion-contracts/original-HEAD"
+    }
+  ],
+  "status": "source consolidation maintained with original provenance; independent publication of changed sources requires a separate version decision"
+}
