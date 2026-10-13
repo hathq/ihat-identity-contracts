@@ -1,0 +1,194 @@
+{
+  "repository": "hathq/ihat-identity-contracts",
+  "purpose": "Exchange account, device and session information through strict identity contracts.",
+  "responsibility_boundary": "Own only the documented product/interface scope. Reuse applicable managed common components without forcing unrelated dependencies. Separate synthetic source acceptance from actual account, data and deployment acceptance.",
+  "packages": [
+    {
+      "manifest": "crates/ihat-identity-assertion-contracts/Cargo.toml",
+      "package": "ihat-identity-assertion-contracts",
+      "ecosystem": "rust",
+      "description": "Closed device identity assertion contracts shared by iHAT consumers",
+      "interfaces": {
+        "lib": "crates/ihat-identity-assertion-contracts/src/lib.rs",
+        "features": {},
+        "bins": [],
+        "public_modules": [],
+        "public_reexports": [
+          "authority_account::*",
+          "authority_canonical::{\n    AUTHORITY_COMMAND_DOMAIN, AUTHORITY_PREPARED_OPERATION_DOMAIN, AUTHORITY_RESPONSE_DOMAIN,\n    FRESH_UV_DOMAIN, SIGNED_EVIDENCE_DOMAIN, canonical_fresh_uv, canonical_response,\n    canonical_signed_evidence, command_digest, command_jcs, prepared_operation_digest,\n}",
+          "authority_command::*",
+          "authority_current_identity::*",
+          "authority_current_session::*",
+          "authority_decode::{decode_authority_request_strict, decode_authority_response_strict}",
+          "authority_device::*",
+          "authority_error::AuthorityWireError",
+          "authority_evidence::*",
+          "authority_projection::SecretFreeProjection",
+          "authority_recovery::*",
+          "authority_response::*",
+          "authority_result::AuthorityResult",
+          "authority_result_core::*",
+          "authority_result_evidence::*",
+          "authority_result_revocation::*",
+          "authority_revocation_cancel::*",
+          "authority_session::*",
+          "authority_uv::*",
+          "authority_verify::{\n    verify_authority_response_at, verify_fresh_uv_at, verify_signed_evidence_at,\n}",
+          "authority_verify_historic::verify_signed_evidence_historic",
+          "canonical::canonical_assertion_payload",
+          "current_status::{\n    CURRENT_DEVICE_STATUS_SCHEMA, CurrentDeviceStatusV1, current_status_matches_assertion,\n    decode_current_status_strict, verify_current_status_at,\n}",
+          "current_status_canonical::canonical_current_status_payload",
+          "error::AssertionError",
+          "model::{\n    DEVICE_IDENTITY_ASSERTION_SCHEMA, DeviceIdentityAssertionV1, DevicePostureV1,\n    RevocationEpochsV1,\n}",
+          "verifier::{AssertionVerifier, decode_assertion_strict, verify_assertion_at}"
+        ],
+        "implicit_bins": []
+      },
+      "declared_commands": {}
+    }
+  ],
+  "schema_definitions": [
+    "crates/ihat-identity-assertion-contracts/schema/current-device-status-v1.schema.json",
+    "crates/ihat-identity-assertion-contracts/schema/device-identity-assertion-v1.schema.json",
+    "schemas/account-recovery-v1.schema.json",
+    "schemas/authenticator-projection-v1.schema.json",
+    "schemas/identity-provider-connection-v1.schema.json",
+    "schemas/owner-recovery-profile-v1.schema.json",
+    "schemas/registered-device-v1.schema.json",
+    "schemas/revocation-event-v1.schema.json",
+    "schemas/service-account-v1.schema.json",
+    "schemas/step-up-evidence-v1.schema.json",
+    "schemas/subject-link-v1.schema.json",
+    "schemas/user-session-v1.schema.json"
+  ],
+  "test_sources": [
+    "crates/ihat-identity-assertion-contracts/src/authority_bounds.rs",
+    "crates/ihat-identity-assertion-contracts/src/authority_crypto.rs",
+    "crates/ihat-identity-assertion-contracts/src/authority_current_identity.rs",
+    "crates/ihat-identity-assertion-contracts/src/authority_current_session.rs",
+    "crates/ihat-identity-assertion-contracts/tests/authority_wire.rs",
+    "crates/ihat-identity-assertion-contracts/tests/authority_wire_failures.rs",
+    "crates/ihat-identity-assertion-contracts/tests/authority_wire_fixture.rs",
+    "crates/ihat-identity-assertion-contracts/tests/authority_wire_response.rs",
+    "crates/ihat-identity-assertion-contracts/tests/authority_wire_support.rs",
+    "crates/ihat-identity-assertion-contracts/tests/contracts.rs",
+    "crates/ihat-identity-assertion-contracts/tests/current_identity_wire.rs",
+    "crates/ihat-identity-assertion-contracts/tests/current_session_wire.rs",
+    "crates/ihat-identity-assertion-contracts/tests/current_status.rs",
+    "crates/ihat-identity-assertion-contracts/tests/current_status_failures.rs",
+    "crates/ihat-identity-assertion-contracts/tests/current_status_support.rs",
+    "crates/ihat-identity-assertion-contracts/tests/fixtures/README.md",
+    "crates/ihat-identity-assertion-contracts/tests/fixtures/wire-v1-fixture.json",
+    "crates/ihat-identity-assertion-contracts/tests/revocation_cancellation_cleanup_wire.rs",
+    "crates/ihat-identity-assertion-contracts/tests/revocation_ceremony_bounds.rs",
+    "crates/ihat-identity-assertion-contracts/tests/revocation_execution_cancellation_wire.rs",
+    "requirements-test.txt",
+    "tests/test_acceptance.py",
+    "tests/test_schema_contracts.py"
+  ],
+  "example_sources": [
+    "examples/account-recovery-v1.example.json",
+    "examples/authenticator-projection-v1.example.json",
+    "examples/identity-provider-connection-v1.example.json",
+    "examples/owner-recovery-profile-v1.example.json",
+    "examples/registered-device-v1.example.json",
+    "examples/revocation-event-v1.example.json",
+    "examples/service-account-v1.example.json",
+    "examples/step-up-evidence-v1.example.json",
+    "examples/subject-link-v1.example.json",
+    "examples/user-session-v1.example.json"
+  ],
+  "workflow_definitions": [
+    {
+      "path": ".github/workflows/assertion-source-history.yml",
+      "jobs": [
+        {
+          "job": "restore",
+          "condition": null,
+          "runs_on": "ubuntu-24.04",
+          "steps": [
+            {
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+              "condition": null
+            },
+            {
+              "name": null,
+              "run": "python3 - <<'PY'\nimport hashlib,json,subprocess,tempfile\nfrom pathlib import Path\nroot=Path('source-history/ihat-identity-assertion-contracts')\nrecord=json.loads((root/'source-record.json').read_text())\nbundle=(root/'original.bundle').resolve()\nassert hashlib.sha256(bundle.read_bytes()).hexdigest()==record['bundle_sha256']\nwith tempfile.TemporaryDirectory() as directory:\n    def git(*args):\n        return subprocess.check_output(['git',*args],cwd=directory,stderr=subprocess.DEVNULL,text=True).strip()\n    git('init','--bare')\n    git('bundle','verify',str(bundle))\n    git('fetch',str(bundle),'+refs/*:refs/*')\n    for ref in record['refs']:\n        assert git('rev-parse',ref['ref'])==ref['sha']\n    assert git('cat-file','-t','2e5db3bcca7b4708b3b78fd30cf456ef4e71ad71')=='commit'\nprint('Published assertion source and decisions restored')\nPY\n",
+              "uses": null,
+              "condition": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/locked-source-tests.yml",
+      "jobs": [
+        {
+          "job": "source-tests",
+          "condition": null,
+          "runs_on": "ubuntu-24.04",
+          "steps": [
+            {
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+              "condition": null
+            },
+            {
+              "name": null,
+              "run": "rustup toolchain install 1.97.1 --profile minimal",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": null,
+              "run": "cargo +1.97.1 test --locked --all-targets",
+              "uses": null,
+              "condition": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/oss-policy.yml",
+      "jobs": [
+        {
+          "job": "repository-policy",
+          "condition": null,
+          "runs_on": "ubuntu-latest",
+          "steps": [
+            {
+              "name": null,
+              "run": null,
+              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+              "condition": null
+            },
+            {
+              "name": "Verify repository policy",
+              "run": "python3 .github/oss-policy-check.py",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Verify policy regression tests",
+              "run": "cd .github && python3 -m unittest discover -s policy-tests",
+              "uses": null,
+              "condition": null
+            },
+            {
+              "name": "Check policy types",
+              "run": "python3 -m venv \"$RUNNER_TEMP/policy-types\"\n\"$RUNNER_TEMP/policy-types/bin/pip\" install -r .github/policy/requirements.txt\n\"$RUNNER_TEMP/policy-types/bin/mypy\" --strict .github/policy .github/oss-policy-check.py .github/policy-tests\n",
+              "uses": null,
+              "condition": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "evidence_policy": "Declarations and source paths are not proof of an executed acceptance. Exact CI head and result are recorded separately. No live accounts or production acceptance is inferred."
+}
