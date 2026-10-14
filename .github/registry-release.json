@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "repository": "hathq/ihat-identity-contracts",
+  "defaultBranch": "main",
+  "requiredWorkflows": [
+    "assertion-source-history.yml",
+    "locked-source-tests.yml",
+    "oss-policy.yml"
+  ],
+  "packages": [
+    {
+      "ecosystem": "cargo",
+      "manifest": "crates/ihat-identity-assertion-contracts/Cargo.toml",
+      "name": "ihat-identity-assertion-contracts",
+      "installDirectory": "."
+    }
+  ]
+}
