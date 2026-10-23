@@ -124,7 +124,7 @@ dependencies = [
 
 [[package]]
 name = "ihat-identity-assertion-contracts"
-version = "0.10.0"
+version = "0.10.1"
 dependencies = [
  "ed25519-dalek",
  "hex",
